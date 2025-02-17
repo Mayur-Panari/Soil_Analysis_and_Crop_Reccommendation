@@ -1,36 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    {%include 'header.html'%}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feedback Form</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f7f7f7;
-            font-family: Arial, sans-serif;
-            color: #050303;
-            font-size: 14px;
-        }
-        
-        .form-container {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 30px 15px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-            margin-bottom: 30px;
-        }
-        
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 0.5px;
-        }
-    </style>
-</head>
+{% extends "base.html" %} {% block title %}Feedback Page{% endblock title %} {% block body %}
 
 <body>
 
@@ -84,7 +52,6 @@
             </div>
         </div>
     </div>
-    {%include 'footer.html'%}
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -109,4 +76,4 @@
 
 </body>
 
-</html>
+{% endblock body %}

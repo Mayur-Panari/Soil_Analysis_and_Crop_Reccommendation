@@ -1,10 +1,16 @@
 from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse
 from urllib import request
 from django.contrib import messages
 from User.helper import GETDATA
+
 from User.models import Feedback
 
+
+
+
 def index(request):
+
     data_getter = GETDATA()
 
     if request.method == "POST":
@@ -12,17 +18,21 @@ def index(request):
         input_data = {
                         'nitrogen':request.POST.get('nitrogen'),
                         'potassium':request.POST.get('potassium'),
-                        'phosporus':request.POST.get('phosporus'),
+                        'phosphorus':request.POST.get('phosphorus'),
                         'humidity':request.POST.get('humidity'),
                         'ph':request.POST.get('ph'),
                         'rainfall':request.POST.get('rainfall'),
                         'temperature':request.POST.get('temperature')
                     }
 
+        print("Data",input_data)
         prediction = data_getter.get_prediction(input_data)
         return JsonResponse(prediction)
 
     return render (request,"index.html")
+
+
+
 
 
 def about(request):

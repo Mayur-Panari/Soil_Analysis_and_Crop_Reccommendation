@@ -1,7 +1,10 @@
-{%include 'header.html'%}
-<div class="container">
+ {% extends "base.html" %} {% block title %}Crop Reccommendation{% endblock title %} {% block body %}
+
+<div class="container" style="padding-bottom: 70px;">
+
     <h2 class="text-center" id="title"><b>Soil Data Input</b></h2>
-    <form id="dataForm">
+    <form id="predictForm" action='/' method="POST">
+        {% csrf_token %}
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label for="nitrogen" class="form-label">Nitrogen (N)</label>
@@ -42,50 +45,101 @@
             </div>
         </div>
 
-        <button type="submit" class="btn submit-btn w-100">Submit</button>
-        <button type="button" class="btn clear-btn w-100 mt-3" id="clearButton">Clear Data</button>
+        <div style="display: flex; justify-content: center; gap: 10px;">
+            <button type="submit" class="btn submit-btn btn-primary mt-3">Submit</button>
+            <button type="button" class="btn clear-btn mt-3" id="clearButton">Clear Data</button>
+        </div>
     </form>
-    <div class="result-message" id="resultMessage">
-        <p>Your data has been successfully submitted!</p>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Prediction Result</h5>
+            </div>
+            <div class="modal-body text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <p class="mt-2">Analyzing soil data...</p>
+
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- Result Modal -->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="card shadow-lg">
+            <div class="card-header bg-info text-white text-center">
+                <h5 class="modal-title">Prediction Result</h5>
+            </div>
+            <div class="card-body text-center">
+                {% if messages %} {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                </div>
+                {% endfor %} {% endif %}
+                <h4 id="predictionResult">Recommended Crop: {{prediction}}</h4>
+            </div>
+        </div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Handle form submission
-    document.getElementById("dataForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Prevent page refresh on submit
 
-        // Simple form validation (in case of empty fields)
-        let formValid = true;
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach(input => {
-            if (!input.value) {
-                formValid = false;
-                input.classList.add('is-invalid');
-            } else {
-                input.classList.remove('is-invalid');
-            }
+    <!-- JavaScript for Live Updates -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const predictForm = document.getElementById('predictForm');
+
+            predictForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Show loading modal
+                const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+                loadingModal.show();
+
+                // Collect form data
+                const formData = new FormData(predictForm);
+
+                // Send AJAX request
+                fetch('/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Hide loading modal
+                        loadingModal.hide();
+
+                        if (data.error) {
+                            // Show error message
+                            $('#predictionResult').text('Error: ' + data.error);
+                        } else {
+                            // Show prediction result
+                            $('#predictionResult').text('Recommended Crop: ' + data.prediction);
+                        }
+                        $('#resultModal').modal('show');
+                    })
+                    .catch(error => {
+                        // Hide loading modal
+                        loadingModal.hide();
+
+                        // Show error modal
+                        $('#predictionResult').text('Error occurred while processing request');
+                        $('#resultModal').modal('show');
+                    });
+            });
         });
+    </script>
 
-        // Show success message if all fields are filled
-        if (formValid) {
-            document.getElementById("resultMessage").style.display = "block";
-        }
-    });
 
-    // Clear data on button click
-    document.getElementById("clearButton").addEventListener("click", function() {
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach(input => {
-            input.value = ''; // Clear all input fields
-            input.classList.remove('is-invalid'); // Remove any validation errors
-        });
-        document.getElementById("resultMessage").style.display = "none"; // Hide success message if any
-    });
-</script>
-</body>
-
-</html>
-{%include 'footer.html'%}
+    {% endblock body %}

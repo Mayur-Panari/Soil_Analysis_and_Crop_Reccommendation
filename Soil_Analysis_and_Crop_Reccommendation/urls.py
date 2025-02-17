@@ -22,7 +22,7 @@ admin.site.site_title = "Soil Analysis and Crop Reccommendation System Portal"
 admin.site.index_title = "Welcome to Crop Reccommendation System"
 
 urlpatterns = [
-    path('adminn/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('',include('User.urls'))
      
 ]
