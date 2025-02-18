@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+</head>
+<body>
+    <div class="form-container col-10 col-md-8 col-lg-5">
+        <h2 class="text-center text-primary mb-4">Login</h2>
+        <form method="POST" action="{% url 'home:login' %}">
+            {% csrf_token %}
+    
+            <div class="mb-3">
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="text-danger">
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+    
+            <div class="mb-3">
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="text-danger">
+                        {% for error in form.password.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+    
+            {% if form.non_field_errors %}
+                <div class="rounded-xl p-6 px-4 mb-3 mt-3 text-2xl white-text bg-red-200">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+    
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+    
+            <div class="text-center mt-3">
+                <a href="{% url 'home:signup' %}" class="text-primary">Create New Account</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

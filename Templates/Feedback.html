@@ -1,54 +1,134 @@
-{% extends "base.html" %} {% block title %}Feedback Page{% endblock title %} {% block body %}
+{% extends "base.html" %} 
+{% block title %}Feedback Page{% endblock title %} 
+{% block body %}
+
+<style>
+    /* General Styles */
+    body {
+        font-family: 'Roboto', sans-serif; /* Use a professional font */
+        background-color: #f4f7fa; /* Light background for better contrast */
+    }
+
+    /* Container for the feedback form */
+    .form-container {
+        background-color: #ffffff; /* White background for the form */
+        border-radius: 8px; /* Rounded corners */
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+        padding: 30px; /* Padding for inner spacing */
+        margin-top: 50px; /* Margin from the top */
+        display: flex; /* Flexbox for image and form alignment */
+        transition: transform 0.3s, box-shadow 0.3s; /* Smooth transition for hover effect */
+    }
+
+    /* Hover effect for the form container */
+    .form-container:hover {
+        transform: translateY(-5px); /* Slight lift on hover */
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+    }
+
+    /* Image styling */
+    .form-image {
+        flex: 1; /* Take up equal space */
+        max-width: 200px; /* Set a maximum width for the image */
+        height: auto; /* Maintain aspect ratio */
+        border-radius: 8px 0 0 8px; /* Rounded corners on the left */
+    }
+
+    /* Form elements styling */
+    .form-group {
+        margin-bottom: 20px; /* Space between form elements */
+        flex: 2; /* Take up more space than the image */
+    }
+
+    /* Input fields */
+    .form-control {
+        border: 1px solid #ced4da; /* Light border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 10px; /* Inner padding */
+        transition: border-color 0.3s; /* Smooth transition for border color */
+    }
+
+    /* Focus effect for input fields */
+    .form-control:focus {
+        border-color: #007bff; /* Change border color on focus */
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Light blue shadow on focus */
+    }
+
+    /* Submit button styling */
+    .btn-primary {
+        background-color: #007bff; /* Primary button color */
+        border: none; /* Remove border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 10px 20px; /* Padding for button */
+        transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+    }
+
+    /* Hover effect for submit button */
+    .btn-primary:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        transform: translateY(-2px); /* Slight lift on hover */
+    }
+
+    /* Response message styling */
+    #responseMessage {
+        margin-top: 20px; /* Space above response message */
+    }
+
+    /* Alert message styling */
+    .alert {
+        border-radius: 5px; /* Rounded corners for alerts */
+    }
+</style>
 
 <body>
-
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6 form-container">
-                <h2>Feedback Form</h2>
-                <form id="feedback-form" action="/feedback/" method="POST">
+            <div class="col-md-8 form-container">
+                <img src="/static/feedback.jpg" alt="Feedback" class="form-image"> <!-- Replace with your image URL -->
+                <div>
+                    <h2>Feedback Form</h2>
+                    <form id="feedback-form" action="/feedback/" method="POST">
+                        {% csrf_token %}
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+                        </div>
 
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
 
-                    {% csrf_token %}
-                    <!-- Name -->
-                    <div class="form-group">
-                        <label for="name">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your full name" required>
+                        <!-- Phone Number -->
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone " name="phone" placeholder="Enter your phone number" required>
+                        </div>
+
+                        <!-- Feedback Section -->
+                        <div class="form-group">
+                            <label for="feedback">Your Feedback</label>
+                            <textarea class="form-control" id="feedback" name="description" rows="4" placeholder="Write your feedback here" required></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-block">Submit Feedback</button>
+                    </form>
+                    <div id="responseMessage" class="mt-3">
+                        {% if messages %} 
+                        {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {% endfor %} 
+                        {% endif %}
                     </div>
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
-                    </div>
-
-                    <!-- Feedback Section -->
-                    <div class="form-group">
-                        <label for="feedback">Your Feedback</label>
-                        <textarea class="form-control" id="feedback" name="description" rows="4" placeholder="Write your feedback here" required></textarea>
-
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary btn-block">Submit Feedback</button>
-                </form>
-                <div id="responseMessage" class="mt-3">
-                    {% if messages %} {% for message in messages %}
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                    </div>
-                    {% endfor %} {% endif %}
                 </div>
-
             </div>
         </div>
     </div>
@@ -72,8 +152,6 @@
             }
         });
     </script>
-
-
 </body>
 
 {% endblock body %}

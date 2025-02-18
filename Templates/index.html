@@ -1,96 +1,218 @@
- {% extends "base.html" %} {% block title %}Crop Reccommendation{% endblock title %} {% block body %}
+{% extends "base.html" %} 
+{% block title %}Crop Recommendation{% endblock title %} 
+{% block body %}
+
+<style>
+    body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-inner img {
+    height: 400px; /* Adjust height as needed */
+    object-fit: cover;
+}
+
+.btn {
+    border-radius: 20px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+</style>
 
 <div class="container" style="padding-bottom: 70px;">
 
+    <!-- Bootstrap Carousel -->
+    <div id="projectCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/static/c1.jpg" class="d-block w-100" alt="Soil Analysis">
+            </div>
+            <div class="carousel-item">
+                <img src="/static/c2.jpg" class="d-block w-100" alt="Crop Recommendation">
+            </div>
+            <div class="carousel-item">
+                <img src="/static/c3.jpg" class="d-block w-100" alt="Sustainable Agriculture">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#projectCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <!-- Project Information Section -->
+    <h2 class="text-center" id="title"><b>About Our Project</b></h2>
+    <div class="row mb-5">
+        <!-- Card 1 -->
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-leaf fa-3x"></i>
+                    <h5 class="card-title">Sustainable Practices</h5>
+                    <p class="card-text">Our project promotes sustainable agricultural practices by providing farmers with data-driven insights for better crop management.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-chart-pie fa-3x"></i>
+                    <h5 class="card-title">Data-Driven Decisions</h5>
+                    <p class="card-text">Utilizing machine learning algorithms, we analyze soil data to recommend the most suitable crops for optimal yield.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col-md-4">
+            <div class="card shadow mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-users fa-3x"></i>
+                    <h5 class="card-title">Community Engagement</h5>
+                    <p class="card-text">We engage with local farmers to understand their needs and challenges, ensuring our solutions are practical and effective.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Soil Data Input Form -->
     <h2 class="text-center" id="title"><b>Soil Data Input</b></h2>
-    <form id="predictForm" action='/' method="POST">
-        {% csrf_token %}
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="nitrogen" class="form-label">Nitrogen (N)</label>
-                <input type="number" class="form-control" id="nitrogen" name="nitrogen" placeholder="Enter nitrogen level" min="0" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="potassium" class="form-label">Potassium (K)</label>
-                <input type="number" class="form-control" id="potassium" name="potassium" placeholder="Enter potassium level" min="0" required>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="phosphorus" class="form-label">Phosphorus (P)</label>
-                <input type="number" class="form-control" id="phosphorus" name="phosphorus" placeholder="Enter phosphorus level" min="0" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="humidity" class="form-label">Humidity (%)</label>
-                <input type="number" class="form-control" id="humidity" name="humidity" placeholder="Enter humidity level" min="0" required>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="ph" class="form-label">pH Level</label>
-                <input type="number" class="form-control" id="ph" name="ph" placeholder="Enter pH level" step="0.1" min="0" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="rainfall" class="form-label">Rainfall (mm)</label>
-                <input type="number" class="form-control" id="rainfall" name="rainfall" placeholder="Enter rainfall" min="0" required>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="temperature" class="form-label">Temperature (°C)</label>
-                <input type="number" class="form-control" id="temperature" name="temperature" placeholder="Enter temperature in °C" step="0.1" min="0" required>
-            </div>
-        </div>
-
-        <div style="display: flex; justify-content: center; gap: 10px;">
-            <button type="submit" class="btn submit-btn btn-primary mt-3">Submit</button>
-            <button type="button" class="btn clear-btn mt-3" id="clearButton">Clear Data</button>
-        </div>
-    </form>
-</div>
-
-<!-- Loading Modal -->
-<div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Prediction Result</h5>
-            </div>
-            <div class="modal-body text-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+    <div class="card shadow mb-5" style="border-radius: 15px;">
+        <form id="predictForm" action='/' method="POST" style="padding: 20px;">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="nitrogen" class="form-label">Nitrogen (N)</label>
+                    <input type="number" class="form-control" id="nitrogen" name="nitrogen" placeholder="Enter nitrogen level" min="0" required>
                 </div>
-                <p class="mt-2">Analyzing soil data...</p>
-
+                <div class="col-md-6 mb-3">
+                    <label for="potassium" class="form-label">Potassium (K)</label>
+                    <input type="number" class="form-control" id="potassium" name="potassium" placeholder="Enter potassium level" min="0" required>
+                </div>
             </div>
-        </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="phosphorus" class="form-label">Phosphorus (P)</label>
+                    <input type="number" class="form-control" id="phosphorus" name="phosphorus" placeholder="Enter phosphorus level" min="0" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="humidity" class="form-label">Humidity (%)</label>
+                    <input type="number" class="form-control" id="humidity" name="humidity" placeholder="Enter humidity level" min="0" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="ph" class="form-label">pH Level</label>
+                    <input type="number" class="form-control" id="ph" name="ph" placeholder="Enter pH level" step="0.1" min="0" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="rainfall" class="form-label">Rainfall (mm)</label>
+                    <input type="number" class="form-control" id="rainfall" name="rainfall" placeholder="Enter rainfall" min="0" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="temperature" class="form-label">Temperature (°C)</label>
+                    <input type="number" class="form-control" id="temperature" name="temperature" placeholder="Enter temperature in °C" step="0.1" min="0" required>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: center; gap: 10px;">
+                <button type="submit" class="btn submit-btn btn-primary mt-3">Submit</button>
+                <button type="button" class="btn clear-btn mt-3" id="clearButton">Clear Data</button>
+            </div>
+        </form>
     </div>
-</div>
 
-<!-- Result Modal -->
-<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-        <div class="card shadow-lg">
-            <div class="card-header bg-info text-white text-center">
-                <h5 class="modal-title">Prediction Result</h5>
-            </div>
-            <div class="card-body text-center">
-                {% if messages %} {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible show" role="alert">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true"></span>
-                            </button>
+    <!-- Loading Modal -->
+    <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Prediction Result</h5>
                 </div>
-                {% endfor %} {% endif %}
-                <h4 id="predictionResult">Recommended Crop: {{prediction}}</h4>
+                <div class="modal-body text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p class="mt-2">Analyzing soil data...</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Result Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+            <div class="card shadow-lg">
+                <div class="card-header bg-info text-white text-center">
+                    <h5 class="modal-title">Prediction Result</h5>
+                </div>
+                <div class="card-body text-center">
+                    {% if messages %} {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    {% endfor %} {% endif %}
+                    <h4 id="predictionResult">Recommended Crop: {{prediction}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- JavaScript for Live Updates -->
     <script>
@@ -141,5 +263,6 @@
         });
     </script>
 
+</div>
 
-    {% endblock body %}
+{% endblock body %}

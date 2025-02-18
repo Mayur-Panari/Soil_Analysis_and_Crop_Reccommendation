@@ -1,80 +1,103 @@
-{% extends "base.html" %} {% block title %}About Page{% endblock title %} {% block body %}
+{% extends "base.html" %} 
+{% block title %}About Page{% endblock title %} 
+{% block body %}
+
+
+<style>
+    body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.shadow {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+</style>
 
 <body>
     <div class="container">
-        <div class="content-frame">
-            <h1 class="text-center">Soil Analysis and Crop Recommendation</h1>
-            <div class="accordion" id="accordionExample">
-                <!-- Project Mission -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              Project Mission
-            </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            Our mission is to empower farmers with real-time soil analysis and accurate crop recommendations using machine learning models, ensuring sustainable agriculture and high-yield crops.
-                        </div>
+        <h1 class="text-center">Soil Analysis and Crop Recommendation</h1>
+        <div class="row">
+            <!-- Project Mission Card -->
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+                        <i class="fas fa-seedling fa-3x"></i>
+                        <h5 class="card-title">Project Mission</h5>
+                        <p class="card-text">Our mission is to empower farmers with real-time soil analysis and accurate crop recommendations using machine learning models, ensuring sustainable agriculture and high-yield crops.</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- About Me -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-              About Me
-            </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            We are student of computer science with a passion for agricultural technology. Our goal is to combine our knowledge of machine learning with the needs of the farming industry to create innovative solutions that improve crop yield and farming efficiency
-                            and best crop reccommendation.
-                        </div>
+            <!-- About Me Card -->
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+                        <i class="fas fa-user-graduate fa-3x"></i>
+                        <h5 class="card-title">About Me</h5>
+                        <p class="card-text">We are students of computer science with a passion for agricultural technology, aiming to combine our knowledge of machine learning with the farming industry's needs.</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Machine Learning Model -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-              Machine Learning Model
-            </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            The machine learning model uses historical data, such as soil nutrients ,ph and Rainfall, to provide accurate recommendations for the best crop choices for each farmer's soil conditions.
-                        </div>
+            <!-- Machine Learning Model Card -->
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+                        <i class="fas fa-brain fa-3x"></i>
+                        <h5 class="card-title">Machine Learning Model</h5>
+                        <p class="card-text">The model uses historical data, such as soil nutrients, pH, and rainfall, to provide accurate recommendations for the best crop choices for each farmer's soil conditions.</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Accuracy of Model -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingFour">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-              Accuracy of the Model
-            </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            We use LogisticRegresion model for the finest accuracy. The model's accuracy is constantly being evaluated and improved through ongoing feedback from users. With continuous learning from new data, it achieves an accuracy of over 96% in crop recommendation.
-                        </div>
+            <!-- Accuracy of Model Card -->
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-3x"></i>
+                        <h5 class="card-title">Accuracy of the Model</h5>
+                        <p class="card-text">We use Logistic Regression for the finest accuracy, achieving over 96% in crop recommendation through continuous learning from new data.</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Contact Me -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingFive">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-              Contact Me
-            </button>
-                    </h2>
-                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <!-- <p></p> -->
-                            Feel free to reach out for more information or inquiries. <br> Email: <a href="https://mail.google.com/mail/">mayurpanari4321@gmail.com</a>
-                            <br> Email: <a href="https://mail.google.com/mail/">abhijeetjadhav201299@gmail.com</a>
-                        </div>
+            <!-- Contact Me Card -->
+            <div class="col-md-4">
+                <div class="card shadow mb-4">
+                    <div class="card-body text-center">
+                        <i class="fas fa-envelope fa-3x"></i>
+                        <h5 class="card-title">Contact Me</h5>
+                        <p class="card-text">Feel free to reach out for more information or inquiries. <br> Email: <a href="mailto:mayurpanari4321@gmail.com">mayurpanari4321@gmail.com</a> <br> Email: <a href="mailto:abhijeetjadhav201299@gmail.com">abhijeetjadhav201299@gmail.com</a></p>
                     </div>
                 </div>
             </div>
