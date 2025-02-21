@@ -59,6 +59,19 @@
 .btn-primary:hover {
     background-color: #0056b3;
 }
+
+/* Animation for result modal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.result-modal {
+    animation: fadeIn 1s ease-in-out;
+    transition: transform 0.5s ease;
+    width: 400px; /* Increased width */
+    font-size: 1.25rem; /* Increased font size */
+}
 </style>
 
 <div class="container" style="padding-bottom: 70px;">
@@ -125,6 +138,7 @@
 
     <!-- Soil Data Input Form -->
     <h2 class="text-center" id="title"><b>Soil Data Input</b></h2>
+    <br>
     <div class="card shadow mb-5" style="border-radius: 15px;">
         <form id="predictForm" action='/' method="POST" style="padding: 20px;">
             {% csrf_token %}
@@ -170,45 +184,21 @@
 
             <div style="display: flex; justify-content: center; gap: 10px;">
                 <button type="submit" class="btn submit-btn btn-primary mt-3">Submit</button>
-                <button type="button" class="btn clear-btn mt-3" id="clearButton">Clear Data</button>
+                <button type="reset" class="btn clear-btn mt-3" id="clearButton">Clear Data</button>
             </div>
         </form>
     </div>
 
-    <!-- Loading Modal -->
-    <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Prediction Result</h5>
-                </div>
-                <div class="modal-body text-center">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    <p class="mt-2">Analyzing soil data...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <!-- Result Modal -->
-    <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-hidden="true" style="animation: fadeIn 1s;">
         <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
-            <div class="card shadow-lg">
+            <div class="card shadow-lg result-modal" style="border-radius: 15px; width: 400px; font-size: 1.25rem;"> <!-- Increased size and font size -->
                 <div class="card-header bg-info text-white text-center">
-                    <h5 class="modal-title">Prediction Result</h5>
+                    <h5 class="modal-title">Recommended Crop</h5>
                 </div>
                 <div class="card-body text-center">
-                    {% if messages %} {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    {% endfor %} {% endif %}
-                    <h4 id="predictionResult">Recommended Crop: {{prediction}}</h4>
+                    <h4 id="predictionResult">{{prediction}}</h4>
                 </div>
             </div>
         </div>
@@ -221,10 +211,6 @@
 
             predictForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-
-                // Show loading modal
-                const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
-                loadingModal.show();
 
                 // Collect form data
                 const formData = new FormData(predictForm);
@@ -239,25 +225,17 @@
                     })
                     .then(response => response.json())
                     .then(data => {
-                        // Hide loading modal
-                        loadingModal.hide();
-
                         if (data.error) {
                             // Show error message
                             $('#predictionResult').text('Error: ' + data.error);
                         } else {
-                            // Show prediction result
-                            $('#predictionResult').text('Recommended Crop: ' + data.prediction);
+                            // Show prediction result with animation
+                            $('#predictionResult').text( data.prediction).hide().fadeIn(1000);
                         }
                         $('#resultModal').modal('show');
                     })
                     .catch(error => {
-                        // Hide loading modal
-                        loadingModal.hide();
-
                         // Show error modal
-                        $('#predictionResult').text('Error occurred while processing request');
-                        $('#resultModal').modal('show');
                     });
             });
         });
