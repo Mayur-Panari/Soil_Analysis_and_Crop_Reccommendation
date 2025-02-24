@@ -1,4 +1,8 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib import messages
+
 from django.http import JsonResponse
 from urllib import request
 from django.contrib import messages
@@ -9,8 +13,34 @@ from User.models import Feedback
 
 
 
-def index(request):
+def signup(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+        user = User.objects.create_user(username=username, password=password, email=email)
+        user.save()
+        messages.success(request, "Account created successfully!")
+        return redirect('signin')
 
+    return render(request, "signup.html")
+
+def signin(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            messages.error(request, "Invalid username or password.")
+    
+    return render(request, "signin.html")
+
+
+
+def index(request):
     data_getter = GETDATA()
 
     if request.method == "POST":
@@ -50,3 +80,8 @@ def feedback(request):
 
 
     return render (request,"feedback.html")
+
+
+def logout(request):
+    logout(request)
+    return redirect('signin')
