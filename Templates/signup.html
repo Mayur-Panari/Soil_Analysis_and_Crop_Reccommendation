@@ -11,42 +11,48 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #e0f7fa, #ffffff);
-        }
-        .form-container {
             background-image: url('/static/c1.jpg');
             background-size: cover;
-            padding: 30px;
+            color: white;
+        }
+        .container {
+            margin-top: 7%;
+            padding: 5% 19%;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
+            justify-items: center;
+            background-color: rgba(23, 21, 21, 0.461);
         }
-        .form-container:hover {
+        .container:hover {
             transform: scale(1.02);
+            box-shadow: 2px 2px 30px rgb(152, 144, 144);
         }
-        .form-label {
-            color: #fff; /* Changed back to white for visibility */
-        }
+      
         .btn-primary {
             transition: background-color 0.3s;
+            margin: 0 auto;
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
+    <div class="container mx-6">
         <h2>Create an Account</h2>
-        <form method="POST" action="{% url 'signup' %}">
+        <br><br>
+        <form method="POST" action="{% url 'signup' %}" class="row">
             {% csrf_token %}
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <button type="submit">Sign Up</button>
+            <div class="mb-5 ">
+                <label for="username" class="form-label h4">Username:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div class="mb-5 ">
+                <label for="email" class="form-label h4">Email:</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="mb-5 ">
+                <label for="password" class="form-label h4">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <button class="btn btn-primary col-3" type="submit">Sign Up</button>
         </form>
         {% if messages %}
             <ul>
@@ -58,6 +64,3 @@
     </div>
 </body>
 </html>
-
-
-

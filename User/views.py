@@ -1,13 +1,12 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as django_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-
 from django.http import JsonResponse
 from urllib import request
 from django.contrib import messages
 from User.helper import GETDATA
-
 from User.models import Feedback
 
 
@@ -83,5 +82,6 @@ def feedback(request):
 
 
 def logout(request):
-    logout(request)
+    django_logout(request)
+
     return redirect('signin')
