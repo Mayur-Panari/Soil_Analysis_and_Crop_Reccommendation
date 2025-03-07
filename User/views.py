@@ -1,5 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -39,7 +41,9 @@ def signin(request):
 
 
 
+@login_required
 def index(request):
+
     data_getter = GETDATA()
 
     if request.method == "POST":
@@ -64,10 +68,14 @@ def index(request):
 
 
 
+@login_required
 def about(request):
+
     return render (request,"about.html")
 
+@login_required
 def feedback(request):
+
     if request.method == "POST":
         name =request.POST.get('name')
         email =request.POST.get('email')
